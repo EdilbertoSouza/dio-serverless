@@ -1,11 +1,11 @@
-service: dio-live-project
-
-frameworkVersion: '2'
-
+service: dio-serverless-project
+frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs14.x
+  environment:
+    DOMAIN_SUFFIX: dio-serverless
   lambdaHashingVersion: '20201221'
   region: us-east-1
   iam:
@@ -18,8 +18,8 @@ provider:
                 - dynamodb:GetItem
                 - dynamodb:Scan
               Resource:
-                - arn:aws:dynamodb:us-east-1:167880115321:table/ItemTable
-                
+                - arn:aws:dynamodb:us-east-1:736951115557:table/ItemTable
+
 functions:
   hello:
     handler: src/hello.handler
@@ -51,6 +51,13 @@ functions:
       - http:
           path: /items/{id}
           method: put
+  deleteItem:
+    handler: src/deleteItem.handler
+    events:
+      - http:
+          path: /items/{id}
+          method: delete
+
 resources:
   Resources:
     ItemTable:
